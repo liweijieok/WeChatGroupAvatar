@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public Bitmap loadBitmap(String url) {
                 try {
+                    //这里只是加载了100*100的头像，可能会比较模糊
                     return Glide.with(getApplicationContext())
                             .asBitmap()
                             .load(url)
