@@ -1,5 +1,5 @@
 # WeChatGroupAvatar
-[ ![Download](https://api.bintray.com/packages/liweijieok/maven/WeChatGroupAvatar/images/download.svg?version=0.0.1) ](https://bintray.com/liweijieok/maven/WeChatGroupAvatar/0.0.1/link)
+[ ![Download](https://api.bintray.com/packages/liweijieok/maven/WeChatGroupAvatar/images/download.svg?version=1.0.0) ](https://bintray.com/liweijieok/maven/WeChatGroupAvatar/1.0.0/link)
 
 这是仿微信群组头像的，使用的方案是合成bitmap显示，而非九宫格里面包含九张图片，就是先把对应的群头像照片先合成为一张之后在显示。他的好处是：在显示群头像的时候，不会在一个头像中有多次加载图片，同时在刷新页面的时候，掉帧不会那么厉害。
 本库同时提供给外部自己确定如何加载bitmap的方案，内部没有实现，。所以群头像的组成可以是本地文件，网络文件或者是drawable等可以转为bitmap的均可，同时也可以决定加载bitmap的清晰度。
@@ -42,11 +42,12 @@ WeChatGroupAvatarHelper.getInstance().config(this, new WeChatBitmapLoader() {
 
 //同步加载
  public GroupAvatar getGroupAvatar(List<String> urls, int size, int gap, int backgroundColor, Bitmap placeHolder)
+ 
 //异步加载
 asyncGetGroupAvatar(List<String> urls, int size, int gap, int backgroundColor, Bitmap placeHolder, final OnWeChatGroupLoaded loaded)
 
 参数说明：
-GroupAvatar：合成之后的信息返回，包括了合成之后的bitmap以及有效参数该bitmap合成的url地址类别(就是成功加载出bitmap的，urls中假如是为空或者是图片加载失败的不会添加进入返回的effectUrls里面)。
+GroupAvatar：合成之后的信息返回，包括了合成之后的bitmap以及有效参数该bitmap合成的url地址类别(就是成功加载出bitmap的url，传入的urls中假如是为空或者是图片加载失败的不会添加进入返回的effectUrls里面)。
 urls：群头像地址
 size：合成bitmap大小
 gap：间隙宽度

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
                     return Glide.with(getApplicationContext())
                             .asBitmap()
                             .load(url)
-                            .submit(100, 100)
+                            .submit()
                             .get();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
@@ -55,6 +56,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         loadImage();
+        iv1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadImage();
+            }
+        });
     }
 
     private void loadImage() {
@@ -69,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         urls.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1557295861685&di=dcf3c308298bb68803cdc279377ad9b6&imgtype=0&src=http%3A%2F%2Fimg17.3lian.com%2Fd%2Ffile%2F201702%2F23%2F6e12cb5e536cbaaa63d4f841f8bcb1dc.jpg");
         urls.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1557295861685&di=d43e0b7216bd3e6c3ca1150280ff86ae&imgtype=0&src=http%3A%2F%2Fpic.rmb.bdstatic.com%2Ff54083119edfb83c4cfe9ce2eeebc076.jpeg");
         urls.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1557295861684&di=65ca3b4f8c5417779ccf03be0e07acfd&imgtype=0&src=http%3A%2F%2Fimg.ph.126.net%2FtUmAKo2mJ5kbaxbvxdVmbA%3D%3D%2F2507379092555461040.jpg");
-        urls.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1557295861684&di=f80c8f2b8abe083630142dd39e7d1945&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F1%2F568b216be30dc.jpg");
+        urls.add("");
         final int placeHolder = R.mipmap.ic_launcher;
         final int backgroundColor = Color.parseColor("#EDEDED");
         WeChatGroupAvatarHelper.getInstance().asyncGetGroupAvatar(urls.subList(0, 1), size, gap, backgroundColor, placeHolder, new OnWeChatGroupLoaded() {
@@ -168,10 +175,11 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
+        //这里的最后一个没有placeholder，而且第九张图为空，所以最终结果是八张图
         ThreadExecutor.getInstance().execute(new Runnable() {
             @Override
             public void run() {
-                final GroupAvatar avatar = WeChatGroupAvatarHelper.getInstance().getGroupAvatar(urls.subList(0, 9), size, gap, backgroundColor, placeHolder);
+                final GroupAvatar avatar = WeChatGroupAvatarHelper.getInstance().getGroupAvatar(urls.subList(0, 9), size, gap, backgroundColor);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

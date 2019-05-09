@@ -141,16 +141,6 @@ public class WeChatGroupAvatarHelper {
             return new GroupAvatar(placeHolder);
         }
         int length = urls.size();
-        //计算单个大小
-        int itemSize;
-        if (length == ONE_COLUMN) {
-            itemSize = size - 2 * gap;
-        } else if (length <= TWO_COLUMN) {
-            itemSize = (size - 3 * gap) / 2;
-        } else {
-            itemSize = (size - 4 * gap) / 3;
-        }
-
         List<Bitmap> bitmaps = new ArrayList<>();
         List<String> effectUrls = new ArrayList<>();
 
@@ -180,12 +170,21 @@ public class WeChatGroupAvatarHelper {
                 bitmaps.add(bitmap);
             }
         }
-
+        length = bitmaps.size();
+        //计算单个大小
+        int itemSize;
+        if (length == ONE_COLUMN) {
+            itemSize = size - 2 * gap;
+        } else if (length <= TWO_COLUMN) {
+            itemSize = (size - 3 * gap) / 2;
+        } else {
+            itemSize = (size - 4 * gap) / 3;
+        }
         scaleBitmap(bitmaps, itemSize);
         Bitmap target = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(target);
         canvas.drawColor(backgroundColor);
-        drawAvatars(size, gap, length, itemSize, bitmaps, canvas);
+        drawAvatars(size, gap, itemSize, bitmaps, canvas);
         recycleBitmap(bitmaps);
         return new GroupAvatar(target, effectUrls);
     }
@@ -195,119 +194,78 @@ public class WeChatGroupAvatarHelper {
      *
      * @param size
      * @param gap
-     * @param length
      * @param itemSize
      * @param bitmaps
      * @param canvas
      */
-    private void drawAvatars(int size, int gap, int length, int itemSize, List<Bitmap> bitmaps, Canvas canvas) {
-        if (length == 1) {
-            Bitmap first = bitmaps.get(0);
-            canvas.drawBitmap(first, gap, gap, null);
-        } else if (length == 2) {
-            Bitmap first = bitmaps.get(0);
-            Bitmap second = bitmaps.get(1);
-            int top = (size - itemSize) / 2;
-            canvas.drawBitmap(first, gap, top, null);
-            canvas.drawBitmap(second, 2 * gap + itemSize, top, null);
-        } else if (length == 3) {
-            Bitmap first = bitmaps.get(0);
-            Bitmap second = bitmaps.get(1);
-            Bitmap third = bitmaps.get(2);
-            int left = (size - itemSize) / 2;
-            canvas.drawBitmap(first, left, gap, null);
-            canvas.drawBitmap(second, gap, 2 * gap + itemSize, null);
-            canvas.drawBitmap(third, 2 * gap + itemSize, 2 * gap + itemSize, null);
-        } else if (length == 4) {
-            Bitmap first = bitmaps.get(0);
-            Bitmap second = bitmaps.get(1);
-            Bitmap third = bitmaps.get(2);
-            Bitmap four = bitmaps.get(3);
-            canvas.drawBitmap(first, gap, gap, null);
-            canvas.drawBitmap(second, 2 * gap + itemSize, gap, null);
-            canvas.drawBitmap(third, gap, 2 * gap + itemSize, null);
-            canvas.drawBitmap(four, gap * 2 + itemSize, 2 * gap + itemSize, null);
-        } else if (length == 5) {
-            Bitmap first = bitmaps.get(0);
-            Bitmap second = bitmaps.get(1);
-            Bitmap third = bitmaps.get(2);
-            Bitmap four = bitmaps.get(3);
-            Bitmap five = bitmaps.get(4);
-            int left = (itemSize + gap) / 2;
-            int top = (itemSize + gap) / 2;
-            canvas.drawBitmap(first, left + gap, gap + top, null);
-            canvas.drawBitmap(second, left + 2 * gap + itemSize, gap + top, null);
-            canvas.drawBitmap(third, gap, gap * 2 + itemSize + top, null);
-            canvas.drawBitmap(four, 2 * gap + itemSize, gap * 2 + itemSize + top, null);
-            canvas.drawBitmap(five, 3 * gap + 2 * itemSize, gap * 2 + itemSize + top, null);
-        } else if (length == 6) {
-            Bitmap first = bitmaps.get(0);
-            Bitmap second = bitmaps.get(1);
-            Bitmap third = bitmaps.get(2);
-            Bitmap four = bitmaps.get(3);
-            Bitmap five = bitmaps.get(4);
-            Bitmap six = bitmaps.get(5);
-            int top = (itemSize + gap) / 2;
-            canvas.drawBitmap(first, gap, gap + top, null);
-            canvas.drawBitmap(second, 2 * gap + itemSize, gap + top, null);
-            canvas.drawBitmap(third, 3 * gap + itemSize * 2, gap + top, null);
-            canvas.drawBitmap(four, gap, gap * 2 + itemSize + top, null);
-            canvas.drawBitmap(five, gap * 2 + itemSize, gap * 2 + itemSize + top, null);
-            canvas.drawBitmap(six, gap * 3 + 2 * itemSize, gap * 2 + itemSize + top, null);
-        } else if (length == 7) {
-            Bitmap first = bitmaps.get(0);
-            Bitmap second = bitmaps.get(1);
-            Bitmap third = bitmaps.get(2);
-            Bitmap four = bitmaps.get(3);
-            Bitmap five = bitmaps.get(4);
-            Bitmap six = bitmaps.get(5);
-            Bitmap seven = bitmaps.get(6);
-            int left = (size - itemSize) / 2;
-            canvas.drawBitmap(first, left, gap, null);
-            canvas.drawBitmap(second, gap, gap * 2 + itemSize, null);
-            canvas.drawBitmap(third, gap * 2 + itemSize, gap * 2 + itemSize, null);
-            canvas.drawBitmap(four, gap * 3 + itemSize * 2, gap * 2 + itemSize, null);
-            canvas.drawBitmap(five, gap, 3 * gap + 2 * itemSize, null);
-            canvas.drawBitmap(six, gap * 2 + itemSize, 3 * gap + 2 * itemSize, null);
-            canvas.drawBitmap(seven, gap * 3 + itemSize * 2, 3 * gap + 2 * itemSize, null);
-        } else if (length == 8) {
-            Bitmap first = bitmaps.get(0);
-            Bitmap second = bitmaps.get(1);
-            Bitmap third = bitmaps.get(2);
-            Bitmap four = bitmaps.get(3);
-            Bitmap five = bitmaps.get(4);
-            Bitmap six = bitmaps.get(5);
-            Bitmap seven = bitmaps.get(6);
-            Bitmap eight = bitmaps.get(7);
-            int left = (itemSize + gap) / 2;
-            canvas.drawBitmap(first, left + gap, gap, null);
-            canvas.drawBitmap(second, left + itemSize + 2 * gap, gap, null);
-            canvas.drawBitmap(third, gap, gap * 2 + itemSize, null);
-            canvas.drawBitmap(four, gap * 2 + itemSize, gap * 2 + itemSize, null);
-            canvas.drawBitmap(five, gap * 3 + itemSize * 2, gap * 2 + itemSize, null);
-            canvas.drawBitmap(six, gap, 3 * gap + 2 * itemSize, null);
-            canvas.drawBitmap(seven, gap * 2 + itemSize, 3 * gap + 2 * itemSize, null);
-            canvas.drawBitmap(eight, gap * 3 + itemSize * 2, 3 * gap + 2 * itemSize, null);
-        } else if (length == 9) {
-            Bitmap first = bitmaps.get(0);
-            Bitmap second = bitmaps.get(1);
-            Bitmap third = bitmaps.get(2);
-            Bitmap four = bitmaps.get(3);
-            Bitmap five = bitmaps.get(4);
-            Bitmap six = bitmaps.get(5);
-            Bitmap seven = bitmaps.get(6);
-            Bitmap eight = bitmaps.get(7);
-            Bitmap nine = bitmaps.get(8);
-            canvas.drawBitmap(first, gap, gap, null);
-            canvas.drawBitmap(second, 2 * gap + itemSize, gap, null);
-            canvas.drawBitmap(third, 3 * gap + itemSize * 2, gap, null);
-            canvas.drawBitmap(four, gap, gap * 2 + itemSize, null);
-            canvas.drawBitmap(five, gap * 2 + itemSize, gap * 2 + itemSize, null);
-            canvas.drawBitmap(six, gap * 3 + itemSize * 2, gap * 2 + itemSize, null);
-            canvas.drawBitmap(seven, gap, 3 * gap + 2 * itemSize, null);
-            canvas.drawBitmap(eight, gap * 2 + itemSize, 3 * gap + 2 * itemSize, null);
-            canvas.drawBitmap(nine, gap * 3 + itemSize * 2, 3 * gap + 2 * itemSize, null);
+    private void drawAvatars(int size, int gap, int itemSize, List<Bitmap> bitmaps, Canvas canvas) {
+        int length = bitmaps.size();
+        int initTop = gap, firstLeft = gap;
+        if (length == 2) {
+            initTop = (size - itemSize) / 2;
+        } else if (length >= 5 && length <= 6) {
+            initTop = (itemSize + gap) / 2 + gap;
         }
+        if (length == 3 || length == 7) {
+            firstLeft = (size - itemSize) / 2;
+        } else if (length == 5 || length == 8) {
+            firstLeft = (itemSize + gap) / 2;
+        }
+
+        for (int i = 0; i < length; i++) {
+            Bitmap item = bitmaps.get(i);
+            int top, left;
+            if (length <= 2) {
+                top = initTop;
+            } else if (length <= 6) {
+                if ((length == 3 && i < 1)
+                        || ((length == 4 || length == 5) && i < 2)
+                        || (length == 6 && i < 3)) {
+                    top = initTop;
+                } else {
+                    top = initTop + gap + itemSize;
+                }
+            } else {
+                if ((length == 7 && i < 1) || (length == 8 && i < 2) || (length == 9 && i < 3)) {
+                    top = initTop;
+                } else if ((length == 7 && i < 4) || (length == 8 && i < 5) || (length == 9 && i < 6)) {
+                    top = gap + itemSize + initTop;
+                } else {
+                    top = 2 * gap + 2 * itemSize + initTop;
+                }
+            }
+
+            if ((length == 3 || length == 7 || length == 5 || length == 8) && i == 0) {
+                //特殊位置第一列
+                left = firstLeft;
+            } else if ((length == 5 || length == 8) && i == 1) {
+                //特殊位置第二列
+                left = firstLeft + gap + itemSize;
+            } else if ((length == 1)
+                    //正常位置第一列
+                    || (length == 2 && i < 1)
+                    || (length == 3 && i == 1)
+                    || (length == 4 && (i % 2 == 0))
+                    || (length == 5 && i == 2)
+                    || ((length == 6 || length == 9) && (i % 3 == 0))
+                    || (length == 7 && (i - 1) % 3 == 0)
+                    || (length == 8 && (i - 2) % 3 == 0)) {
+                left = gap;
+            } else if ((length <= 4)
+                    || (length == 5 && i == 3)
+                    || ((length == 6 || length == 9) && (i - 1) % 3 == 0)
+                    || (length == 7 && (i - 2) % 3 == 0)
+                    || (length == 8 && i % 3 == 0)) {
+                //正常位置第二列
+                left = 2 * gap + itemSize;
+            } else {
+                //正常位置第三列
+                left = 3 * gap + 2 * itemSize;
+            }
+
+            canvas.drawBitmap(item, left, top, null);
+        }
+
     }
 
     /**
