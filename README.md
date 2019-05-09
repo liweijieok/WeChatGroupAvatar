@@ -1,4 +1,5 @@
 # WeChatGroupAvatar
+
 [ ![Download](https://api.bintray.com/packages/liweijieok/maven/WeChatGroupAvatar/images/download.svg?version=1.0.0) ](https://bintray.com/liweijieok/maven/WeChatGroupAvatar/1.0.0/link)
 
 这是仿微信群组头像的，使用的方案是合成bitmap显示，而非九宫格里面包含九张图片，就是先把对应的群头像照片先合成为一张之后在显示。他的好处是：在显示群头像的时候，不会在一个头像中有多次加载图片，同时在刷新页面的时候，掉帧不会那么厉害。
@@ -8,7 +9,7 @@
 ## 使用
 
 ```
- implementation 'com.github.liweijie:WeChatGroupAvatar:0.0.1'
+ implementation 'com.github.liweijie:WeChatGroupAvatar:1.0.0'
 ```
 
 在`WeChatGroupAvatarHelper`中提供了同步获取和异步获取的方法，在使用之前，需要先调用config()方法置顶加载bitmap的方式，比如使用glide
