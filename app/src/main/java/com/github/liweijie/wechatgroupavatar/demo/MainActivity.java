@@ -22,7 +22,7 @@ import java.util.concurrent.ExecutionException;
  * @author liweijie
  */
 public class MainActivity extends AppCompatActivity {
-    private ImageView iv1, iv2, iv3, iv4, iv5, iv6, iv7, iv8, iv9;
+    private ImageView iv1, iv2, iv3, iv4, iv5, iv6, iv7, iv8, iv9,iv10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         iv7 = findViewById(R.id.avatar7);
         iv8 = findViewById(R.id.avatar8);
         iv9 = findViewById(R.id.avatar9);
+        iv10 = findViewById(R.id.avatar10);
         WeChatGroupAvatarHelper.getInstance().config(this, new WeChatBitmapLoader() {
             @Override
             public Bitmap loadBitmap(String url) {
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         urls.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1557295861685&di=dcf3c308298bb68803cdc279377ad9b6&imgtype=0&src=http%3A%2F%2Fimg17.3lian.com%2Fd%2Ffile%2F201702%2F23%2F6e12cb5e536cbaaa63d4f841f8bcb1dc.jpg");
         urls.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1557295861685&di=d43e0b7216bd3e6c3ca1150280ff86ae&imgtype=0&src=http%3A%2F%2Fpic.rmb.bdstatic.com%2Ff54083119edfb83c4cfe9ce2eeebc076.jpeg");
         urls.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1557295861684&di=65ca3b4f8c5417779ccf03be0e07acfd&imgtype=0&src=http%3A%2F%2Fimg.ph.126.net%2FtUmAKo2mJ5kbaxbvxdVmbA%3D%3D%2F2507379092555461040.jpg");
-        urls.add("");
+        urls.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1559586457253&di=4869eccea2be98be73973356b9df5712&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201509%2F10%2F20150910124631_fTrPX.jpeg");
         final int placeHolder = R.mipmap.ic_launcher;
         final int backgroundColor = Color.parseColor("#EDEDED");
         WeChatGroupAvatarHelper.getInstance().asyncGetGroupAvatar(urls.subList(0, 1), size, gap, backgroundColor, placeHolder, new OnWeChatGroupLoaded() {
@@ -175,15 +176,31 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
-        //这里的最后一个没有placeholder，而且第九张图为空，所以最终结果是八张图
+
         ThreadExecutor.getInstance().execute(new Runnable() {
             @Override
             public void run() {
-                final GroupAvatar avatar = WeChatGroupAvatarHelper.getInstance().getGroupAvatar(urls.subList(0, 9), size, gap, backgroundColor);
+                final GroupAvatar avatar = WeChatGroupAvatarHelper.getInstance().getGroupAvatar(urls.subList(0, 9), size, gap, backgroundColor,placeHolder);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         iv9.setImageBitmap(avatar.getBitmap());
+                    }
+                });
+            }
+        });
+        //这里的最后一个没有placeholder，而且第九张图为空，所以最终结果是八张图
+        final List<String> testEmptyPlaceHolder = new ArrayList<>();
+        testEmptyPlaceHolder.addAll(urls.subList(0, 8));
+        testEmptyPlaceHolder.add("");
+        ThreadExecutor.getInstance().execute(new Runnable() {
+            @Override
+            public void run() {
+                final GroupAvatar avatar = WeChatGroupAvatarHelper.getInstance().getGroupAvatar(testEmptyPlaceHolder.subList(0, 9), size, gap, backgroundColor);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        iv10.setImageBitmap(avatar.getBitmap());
                     }
                 });
             }

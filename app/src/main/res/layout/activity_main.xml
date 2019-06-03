@@ -65,6 +65,12 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_marginTop="20dp" />
+
+        <ImageView
+            android:id="@+id/avatar10"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="20dp" />
     </LinearLayout>
 
 </ScrollView>

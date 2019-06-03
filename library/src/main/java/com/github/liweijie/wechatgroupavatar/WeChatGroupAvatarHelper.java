@@ -37,6 +37,7 @@ public class WeChatGroupAvatarHelper {
 
     private WeChatBitmapLoader loader;
     private WeakReference<Context> context;
+    private Bitmap defaultBitmap;
 
     private WeChatGroupAvatarHelper() {
 
@@ -51,8 +52,13 @@ public class WeChatGroupAvatarHelper {
     }
 
     public void config(Context context, WeChatBitmapLoader loader) {
+        this.config(context, loader, null);
+    }
+
+    public void config(Context context, WeChatBitmapLoader loader, Bitmap defaultBitmap) {
         this.loader = loader;
         this.context = new WeakReference<>(context);
+        this.defaultBitmap = defaultBitmap;
     }
 
     public void asyncGetGroupAvatar(List<String> urls, int size, int gap, final OnWeChatGroupLoaded loaded) {
@@ -134,7 +140,7 @@ public class WeChatGroupAvatarHelper {
      */
     public GroupAvatar getGroupAvatar(List<String> urls, int size, int gap, int backgroundColor, Bitmap placeHolder) {
         if (urls == null || urls.isEmpty()) {
-            return new GroupAvatar(placeHolder);
+            return new GroupAvatar(defaultBitmap);
         }
         if (loader == null) {
             Log.e("getGroupAvatar>>>", "Please setup WeChatBitmapLoader before generate group avatar，call the config()");
@@ -174,7 +180,7 @@ public class WeChatGroupAvatarHelper {
         //计算单个大小
         int itemSize;
         if (length == ONE_COLUMN) {
-            itemSize = size - 2 * gap;
+            itemSize = size / 2;
         } else if (length <= TWO_COLUMN) {
             itemSize = (size - 3 * gap) / 2;
         } else {
@@ -201,12 +207,16 @@ public class WeChatGroupAvatarHelper {
     private void drawAvatars(int size, int gap, int itemSize, List<Bitmap> bitmaps, Canvas canvas) {
         int length = bitmaps.size();
         int initTop = gap, firstLeft = gap;
-        if (length == 2) {
+        if (length == 1) {
+            initTop = size >> 2;
+        } else if (length == 2) {
             initTop = (size - itemSize) / 2;
         } else if (length >= 5 && length <= 6) {
             initTop = (itemSize + gap) / 2 + gap;
         }
-        if (length == 3 || length == 7) {
+        if (length == 1) {
+            firstLeft = size >> 2;
+        } else if (length == 3 || length == 7) {
             firstLeft = (size - itemSize) / 2;
         } else if (length == 5 || length == 8) {
             firstLeft = (itemSize + gap) / 2;
@@ -235,7 +245,7 @@ public class WeChatGroupAvatarHelper {
                 }
             }
 
-            if ((length == 3 || length == 7 || length == 5 || length == 8) && i == 0) {
+            if ((length == 1 || length == 3 || length == 7 || length == 5 || length == 8) && i == 0) {
                 //特殊位置第一列
                 left = firstLeft;
             } else if ((length == 5 || length == 8) && i == 1) {
@@ -271,7 +281,7 @@ public class WeChatGroupAvatarHelper {
     /**
      * 缩放到至大小
      *
-     * @param bitmaps    列表
+     * @param bitmaps 列表
      * @param targetSize 目标大小
      */
     private static void scaleBitmap(List<Bitmap> bitmaps, int targetSize) {
