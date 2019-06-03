@@ -20,8 +20,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(":library")
-//    compile 'com.github.liweijie:WeChatGroupAvatar:0.0.1'
+//    implementation project(":library")
+    compile 'com.github.liweijie:WeChatGroupAvatar:1.0.1'
 
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'

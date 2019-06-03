@@ -9,7 +9,7 @@
 ## 使用
 
 ```
- implementation 'com.github.liweijie:WeChatGroupAvatar:1.0.1'
+ implementation 'com.github.liweijie:WeChatGroupAvatar:1.0.0'
 ```
 
 在`WeChatGroupAvatarHelper`中提供了同步获取和异步获取的方法，在使用之前，需要先调用config()方法置顶加载bitmap的方式，比如使用glide
