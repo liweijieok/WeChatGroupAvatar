@@ -177,6 +177,9 @@ public class WeChatGroupAvatarHelper {
             }
         }
         length = bitmaps.size();
+        if (length == 0) {
+            return new GroupAvatar(defaultBitmap);
+        }
         //计算单个大小
         int itemSize;
         if (length == ONE_COLUMN) {
@@ -281,7 +284,7 @@ public class WeChatGroupAvatarHelper {
     /**
      * 缩放到至大小
      *
-     * @param bitmaps 列表
+     * @param bitmaps    列表
      * @param targetSize 目标大小
      */
     private static void scaleBitmap(List<Bitmap> bitmaps, int targetSize) {
